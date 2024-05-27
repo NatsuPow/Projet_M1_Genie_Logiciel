@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.Duration;
 
 public class Recharge {
     private LocalDateTime dateDebut;
@@ -6,18 +7,16 @@ public class Recharge {
     private int dureePrevue; // en minutes
     private int dureeReelle; // en minutes
     private double prix;
-    private double supplement;
 
     private Borne borneUtilisee;
     private Paiement paiement;
+    private Client client;
 
     public Recharge(LocalDateTime dateDebut, int dureePrevue, double prix) {
         this.dateDebut = dateDebut;
         this.dureePrevue = dureePrevue;
         this.prix = prix;
     }
-
-    //methode interessantes
 
     // méthode pour calculer le supplément de la recharge
     private double calculerSupplement() {
@@ -28,7 +27,7 @@ public class Recharge {
         }
     }
 
-    // methodes de base
+
     public LocalDateTime getDateDebut() {
         return dateDebut;
     }
@@ -50,27 +49,31 @@ public class Recharge {
     }
 
     public double getSupplement() {
-        return supplement;
+        if (dateFin != null) {
+            return calculerSupplement();
+        } else {
+            return 0;
+        }
     }
 
-    // Setters (mutateurs)
     public void setDateFin(LocalDateTime dateFin) {
         this.dateFin = dateFin;
-        this.dureeReelle = (int) java.time.Duration.between(dateDebut, dateFin).toMinutes();
-        this.supplement = calculerSupplement();
-        this.prix += this.supplement;
+        this.dureeReelle = (int) Duration.between(dateDebut, dateFin).toMinutes();
+        this.prix += calculerSupplement();
     }
 
     public void setDureePrevue(int dureePrevue) {
-        this.dureePrevue = dureePrevue;
-        this.supplement = calculerSupplement();
-        this.prix += this.supplement;
+        if (dateFin != null) {
+            this.dureePrevue = dureePrevue;
+            this.prix += calculerSupplement();
+        } else {
+            this.dureePrevue = dureePrevue;
+        }
     }
-
 
     @Override
     public String toString() {
         return "Recharge [dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", dureePrevue=" + dureePrevue
-                + ", dureeReelle=" + dureeReelle + ", prix=" + prix + ", supplement=" + supplement + "]";
+                + ", dureeReelle=" + dureeReelle + ", prix=" + prix + ", supplement=" + getSupplement() + "]";
     }
 }

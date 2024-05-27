@@ -6,12 +6,14 @@ public class Gerant {
     private double prixDepassement;
     private double prixNonPresentation;
 
-    // Constructeur
-    public Gerant(List<Client> clients) {
+    public Gerant(List<Client> clients, double prixChargeReservee, double prixDepassement, double prixNonPresentation) {
         this.clients = clients;
+        this.prixChargeReservee = prixChargeReservee;
+        this.prixDepassement = prixDepassement;
+        this.prixNonPresentation = prixNonPresentation;
     }
 
-    // Méthodes pour consulter les profils des clients enregistrés
+    // methode pour consulter les profils des clients enregistrés
     public List<Client> getClients() {
         return List.copyOf(clients); // Renvoie une copie en lecture seule de la liste des clients
     }
@@ -28,7 +30,6 @@ public class Gerant {
         }
         System.out.println("Aucun client trouvé avec le numéro " + numClient);
     }
-
 
     public void setPrixChargeReservee(double prixChargeReservee) {
         this.prixChargeReservee = prixChargeReservee;

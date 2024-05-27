@@ -6,13 +6,14 @@ public class Client {
     private String adresse;
     private String mail;
 
-    private int numClient; // Changement de nom : numClient au lieu de numero
-    private String numCarteDebit; // Changement de nom : numCarteDebit au lieu de numeroCarteDebit
+    private int numClient;
+    private String numCarteDebit;
     private int numContrat;
 
     private ArrayList<Vehicule> listVehicules;
     private ArrayList<Facture> listFactures;
-    private ArrayList<Recharge> listRecharges; // Changement de nom : listRecharges au lieu de listRecharge
+    private ArrayList<Reservation> listReservations;
+    private ArrayList<Recharge> listRecharges;
 
     public Client(String nom, String prenom, String adresse, String mail, String numCarteDebit, int numContrat, ArrayList<Vehicule> listVehicules) {
         this.nom = nom;
@@ -25,6 +26,7 @@ public class Client {
         this.numContrat = numContrat;
         this.listVehicules = listVehicules;
         this.listFactures = new ArrayList<Facture>();
+        this.listReservations = new ArrayList<Reservation>();
         this.listRecharges = new ArrayList<Recharge>();
     }
 
@@ -89,7 +91,7 @@ public class Client {
         this.numCarteDebit = numCarteDebit;
     }
 
-    public int getNumClient() { // Ajout de la méthode getNumClient
+    public int getNumClient() {
         return numClient;
     }
 
@@ -99,6 +101,10 @@ public class Client {
 
     public ArrayList<Facture> getListFactures() {
         return listFactures;
+    }
+
+    public ArrayList<Reservation> getListReservations() {
+        return listReservations;
     }
 
     public ArrayList<Recharge> getListRecharges() {

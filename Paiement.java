@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 
 public class Paiement {
+    private int numIdentifiant;
     private int numContrat;
     private LocalDateTime dateDebut;
     private LocalDateTime dateFin;
@@ -11,11 +12,16 @@ public class Paiement {
         CONTRAT
     }
 
-    public Paiement(int numContrat, LocalDateTime dateDebut, LocalDateTime dateFin, TypePaiement typePaiement) {
+    public Paiement(int numIdentifiant, int numContrat, LocalDateTime dateDebut, LocalDateTime dateFin, TypePaiement typePaiement) {
+        this.numIdentifiant = numIdentifiant;
         this.numContrat = numContrat;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.typePaiement = typePaiement;
+    }
+
+    public int getNumIdentifiant() {
+        return numIdentifiant;
     }
 
     public int getNumContrat() {
@@ -49,7 +55,10 @@ public class Paiement {
     // Méthode pour afficher les informations du paiement
     @Override
     public String toString() {
-        return "Paiement [numContrat=" + numContrat + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin
-                + ", typePaiement=" + typePaiement + "]";
+        if (typePaiement == TypePaiement.RECHARGE) {
+            return "Paiement [numPaiement=" + numIdentifiant + "de type :"+ typePaiement +", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", typePaiement=" + typePaiement + "]";
+        } else {
+            return "Paiement [numContrat=" + numContrat + "de type :"+ typePaiement + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", typePaiement=" + typePaiement + "]";
+        }
     }
 }

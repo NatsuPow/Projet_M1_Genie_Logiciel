@@ -4,14 +4,14 @@ public class Facture {
     private double fraisReservation;
     private double fraisPenalite;
     private double montantTotal;
+    private Client client;
 
-    // Constructeur
     public Facture(int numFacture, double fraisRecharge, double fraisReservation, double fraisPenalite) {
         this.numFacture = numFacture;
         this.fraisRecharge = fraisRecharge;
         this.fraisReservation = fraisReservation;
         this.fraisPenalite = fraisPenalite;
-        this.montantTotal = calculerMontantTotal();
+        this.montantTotal = calculerMontantTotal(); // Appeler la méthode après avoir initialisé les valeurs des frais
     }
 
     //methodes interressantes
@@ -56,7 +56,6 @@ public class Facture {
         this.fraisPenalite = fraisPenalite;
         this.montantTotal = calculerMontantTotal();
     }
-
 
     @Override
     public String toString() {

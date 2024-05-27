@@ -12,6 +12,7 @@ public class Contrat {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.client = client;
+
     }
 
     // Méthode pour afficher les informations du contrat
@@ -20,6 +21,8 @@ public class Contrat {
         return "Contrat [numContrat=" + numContrat + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin
                 + ", client=" + client + ", paiement=" + paiement + "]";
     }
+
+
     public int getNumContrat() {
         return numContrat;
     }
@@ -40,7 +43,7 @@ public class Contrat {
         return paiement;
     }
 
-    // Setters (mutateurs)
+
     public void setDateDebut(LocalDateTime dateDebut) {
         this.dateDebut = dateDebut;
     }
@@ -56,6 +59,4 @@ public class Contrat {
     public void setPaiement(Paiement paiement) {
         this.paiement = paiement;
     }
-
-
 }
