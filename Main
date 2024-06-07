@@ -1,0 +1,117 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    private static int idClientConnecte;
+    private static int numImmatriculationClientConnecte;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String choix = "";
+        boolean authentifie = false;
+
+        do {
+            if (!authentifie) {
+                pageAuthentification();
+
+                // choix entre "Inscription" et "Connexion"
+                choix = scanner.nextLine();
+
+                switch (choix) {
+                    case "1": //INSCRIPTION
+
+                        System.out.print("Entrez le nom du client : ");
+                        String nom = scanner.nextLine();
+
+                        System.out.print("Entrez le prénom du client : ");
+                        String prenom = scanner.nextLine();
+
+                        System.out.print("Entrez l'adresse du client : ");
+                        String adresse = scanner.nextLine();
+
+                        System.out.print("Entrez l'adresse e-mail du client : de la forme adresse@domaine.fr ");
+                        String mail = scanner.nextLine();
+
+                        System.out.print("Entrez le numéro de carte de débit du client : format 1234567891234567 ");
+                        String numCarteDebit = scanner.nextLine();
+
+                        System.out.print("Entrez un mdp : ");
+                        String mdp = scanner.nextLine();
+
+                        Client nouveauClient = new Client(nom, prenom, adresse, mail, numCarteDebit,mdp);
+                        DBManager.insererClient(nouveauClient);
+
+                        break;
+
+                    case "2":
+                        System.out.print("Entrez votre nom : ");
+                        String nomClient = scanner.nextLine();
+                        System.out.print("Entrez votre mot de passe : ");
+                        String mdpClient = scanner.nextLine();
+
+                        int[] resultats = DBManager.authentifierClient(nomClient, mdpClient);
+
+                        if (resultats[0] != 0) {
+                            int idClient = resultats[0];
+                            int numImmatriculation = resultats[1];
+
+                            Main.idClientConnecte = idClient;
+                            Main.numImmatriculationClientConnecte = numImmatriculation;
+
+                            afficherMenu();
+
+                            choix = scanner.nextLine();
+
+                        } else {
+                            System.out.println("Connexion échouée. Veuillez réessayer.");
+                        }
+
+                        break;
+
+                }
+                // Demande à l'utilisateur de choisir une fonctionnalité
+                choix = scanner.nextLine();
+
+                switch (choix) {
+                    case "1":
+                        // Code pour vérifier la disponibilité des bornes
+                        break;
+                    case "2":
+                        // Code pour réserver une borne
+                        break;
+                    case "3":
+                        // Code pour modifier une réservation
+                        break;
+                    case "4":
+                        // Code pour prolonger une occupation
+                        break;
+                    case "5":
+                        System.out.println("Au revoir et à bientôt !");
+                        break;
+                    default:
+                        System.out.println("Veuillez entrer un choix valide.");
+                        break;
+                }
+            }
+        } while (choix != "5");
+
+        scanner.close();
+    }
+
+    private static void pageAuthentification() {
+        System.out.println("\nBienvenue dans notre parc de recharge pour véhicules électriques !");
+        System.out.println("1. S'inscrire");
+        System.out.println("2. Se connecter");
+    }
+
+    private static void afficherMenu() {
+        System.out.println("\nBienvenue dans votre espace client !");
+        System.out.println("Voici les fonctionnalités disponibles :");
+        System.out.println("1. Vérifier la disponibilité des bornes de recharge");
+        System.out.println("2. Réserver une borne de recharge");
+        System.out.println("3. Modifier une réservation existante");
+        System.out.println("4. Prolonger une occupation actuelle d'une borne");
+        System.out.println("5. Quitter");
+        System.out.print("Entrez le numéro de la fonctionnalité que vous souhaitez utiliser : ");
+    }
+}
