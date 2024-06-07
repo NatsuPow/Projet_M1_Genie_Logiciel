@@ -1,0 +1,131 @@
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("Tests pour FormatUtil")
+public class ClassTest {
+
+    @DisplayName("Test de formatage de date")
+    @Test
+    public void dateTest() {
+        String date = "2022-03-01";
+        String formattedDate = Client.formatDate(date);
+        String expectedDate = "01/03/2022";
+        assertEquals(expectedDate, formattedDate, "Le format de la date est incorrect");
+    }
+
+    @DisplayName("Test de formatage de plaque d'immatriculation")
+    @Test
+    public void immatriculationTest() {
+        String immatriculation = "123-AB-45";
+        String formattedImmatriculation = Client.formatImmatriculation(immatriculation);
+        String expectedImmatriculation = "123 AB 45";
+        assertEquals(expectedImmatriculation, formattedImmatriculation, "Le format de la plaque d'immatriculation est incorrect");
+    }
+
+    @DisplayName("Test de validation d'adresse e-mail")
+    @Test
+    public void emailTest() {
+        String validEmail = "test@example.com";
+        boolean isValid = Client.isValidEmail(validEmail);
+        Assertions.assertTrue(isValid, "L'adresse e-mail valide n'a pas été reconnue");
+
+        String invalidEmail = "test@example";
+        isValid = Client.isValidEmail(invalidEmail);
+        assertFalse(isValid, "L'adresse e-mail invalide a été reconnue comme valide");
+    }
+
+    @DisplayName("Test de validation format date")
+    @Test
+    public void testDateDebutValide() {
+        Vehicule vehicule = new Vehicule("123-AB-45",false );
+
+        LocalDateTime dateDebut = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime dateFin = LocalDateTime.now().plusHours(2);
+        Reservation reservation = new Reservation(1, vehicule, dateDebut, dateFin);
+
+        // Vérification que la réservation a été créée avec succès
+        assertEquals(1, reservation.getNumReservation());
+        assertEquals(vehicule, reservation.getVehicule());
+        assertEquals(dateDebut, reservation.getDateDebut());
+        assertEquals(dateFin, reservation.getDateFin());
+        assertEquals(Reservation.EtatReservation.EN_COURS, reservation.getEtatReservation());
+        assertEquals(0, reservation.getNombreProlongations());
+    }
+
+    @Test
+    public void testReservationDateDebutValide() {
+        Vehicule vehicule = new Vehicule("123-AB-45", false);
+        LocalDateTime dateDebut = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime dateFin = LocalDateTime.now().plusHours(1);
+        Reservation reservation = new Reservation(1, vehicule, dateDebut, dateFin);
+
+        assertEquals(1, reservation.getNumReservation());
+        assertEquals(vehicule, reservation.getVehicule());
+        assertEquals(dateDebut, reservation.getDateDebut());
+        assertEquals(dateFin, reservation.getDateFin());
+        assertEquals(Reservation.EtatReservation.EN_COURS, reservation
+                .getEtatReservation());
+        assertEquals(0, reservation.getNombreProlongations());
+    }
+
+    @Test
+    public void testReservationDateDebutInvalide() {
+        Vehicule vehicule = new Vehicule("123-AB-45", false);
+        LocalDateTime dateDebut = LocalDateTime.now().minusMinutes(10);
+        LocalDateTime dateFin = LocalDateTime.now().plusHours(1);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Reservation(1, vehicule, dateDebut, dateFin);
+        });
+    }
+
+
+    public boolean isValidEmail(String email) {
+        // code de validation de l'adresse email
+        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        return email.matches(regex);
+    }
+
+    @DisplayName("Test de création de réservation avec une date de fin antérieure à la date de début")
+    @Test
+    public void reservationDateFinBeforeDateDebutTest() {
+        Vehicule vehicule = new Vehicule("123-AB-45", false);
+        LocalDateTime dateDebut = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime dateFin = LocalDateTime.now().minusHours(1);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Reservation(1, vehicule, dateDebut, dateFin);
+        });
+    }
+
+    @DisplayName("Test de création de réservation avec des valeurs nulles")
+    @Test
+    public void reservationNullTest() {
+        Vehicule vehicule = null;
+        LocalDateTime dateDebut = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime dateFin = LocalDateTime.now().plusHours(1);
+        assertThrows(NullPointerException.class, () -> {
+            new Reservation(1, vehicule, dateDebut, dateFin);
+        });
+    }
+    @DisplayName("Vérification somme pour la facturation")
+    @Test
+    public void testMontantTotalCalculeCorrectement() {
+        double fraisRecharge = 10.0;
+        double fraisReservation = 5.0;
+        double fraisPenalite = 2.5;
+        int numFacture = 1;
+        Client client = new Client("Dupont", "Jean", "123 rue de la paix, 75000 Paris", "jean.dupont@example.com", "1234-5678-9012-3456", "password");
+
+        Facture facture = new Facture(client,fraisRecharge, fraisReservation, fraisPenalite);
+
+        double montantTotalAttendu = fraisRecharge + fraisReservation + fraisPenalite;
+        assertEquals(montantTotalAttendu, facture.getMontantTotal(), 0.0);
+    }
+
+
+}
