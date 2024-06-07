@@ -1,7 +1,9 @@
-Projet de gestion de recharge de véhicules électriques
+Projet de gestion de recharge de véhicules électriques.
+
 Ce projet est une application Java de gestion de recharge de véhicules électriques. Il permet aux utilisateurs de s'inscrire, de se connecter, de réserver une borne de recharge, de modifier une réservation existante et de prolonger une occupation actuelle d'une borne.
 
-Prérequis
+Prérequis:
+
 JDK 8 ou version ultérieure
 PostgreSQL 9.6 ou version ultérieure
 Installation
