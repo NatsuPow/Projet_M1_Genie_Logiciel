@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Client {
@@ -5,6 +7,8 @@ public class Client {
     private String prenom;
     private String adresse;
     private String mail;
+
+    private String mdp;
 
     private int numClient;
     private String numCarteDebit;
@@ -15,19 +19,40 @@ public class Client {
     private ArrayList<Reservation> listReservations;
     private ArrayList<Recharge> listRecharges;
 
-    public Client(String nom, String prenom, String adresse, String mail, String numCarteDebit, int numContrat, ArrayList<Vehicule> listVehicules) {
+    public Client(String nom, String prenom, String adresse, String mail, String numCarteDebit, String mdp) {
         this.nom = nom;
         this.prenom = prenom;
         this.adresse = adresse;
         this.mail = mail;
-
-        this.numClient = generateNumClient();
+        this.mdp = mdp;
         this.numCarteDebit = numCarteDebit;
-        this.numContrat = numContrat;
-        this.listVehicules = listVehicules;
+        this.listVehicules = new ArrayList<Vehicule>();
         this.listFactures = new ArrayList<Facture>();
         this.listReservations = new ArrayList<Reservation>();
         this.listRecharges = new ArrayList<Recharge>();
+    }
+
+    public static String formatImmatriculation(String immatriculation) {
+        // code de formatage de la plaque d'immatriculation
+        String formattedImmatriculation = immatriculation.toUpperCase().replace("-", " ");
+        return formattedImmatriculation;
+    }
+
+    public static boolean isValidEmail(String email) {
+        // code de validation de l'adresse email
+        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        return email.matches(regex);
+    }
+
+    public static String formatDate(String date) {
+        // code de formatage de la date
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, inputFormatter);
+
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate = localDate.format(outputFormatter);
+
+        return formattedDate;
     }
 
     // Méthode pour générer un numéro de client unique (à améliorer en fonction de vos besoins)
@@ -109,5 +134,21 @@ public class Client {
 
     public ArrayList<Recharge> getListRecharges() {
         return listRecharges;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
+
+    public boolean isCorrectPassword(String password) {
+        return this.mdp.equals(password);
+    }
+
+    public static boolean validerNom(String nom) {
+        return !nom.isEmpty() && !nom.isBlank();
     }
 }

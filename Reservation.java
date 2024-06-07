@@ -9,6 +9,7 @@ public class Reservation {
     private int nombreProlongations;
 
     public Reservation(int numReservation, Vehicule vehicule, LocalDateTime dateDebut, LocalDateTime dateFin) {
+        verifyReservationInputs(vehicule, dateDebut, dateFin);
         this.numReservation = numReservation;
         this.vehicule = vehicule;
         this.dateDebut = dateDebut;
@@ -16,6 +17,21 @@ public class Reservation {
         this.etatReservation = EtatReservation.EN_COURS;
         this.nombreProlongations = 0;
     }
+
+    private static void verifyReservationInputs(Vehicule vehicule, LocalDateTime dateDebut, LocalDateTime dateFin) {
+        if (vehicule == null) {
+            throw new NullPointerException("Le véhicule ne peut pas être null");
+        }
+        if (dateDebut.isAfter(dateFin)) {
+            throw new IllegalArgumentException("La date de début ne peut pas être après la date de fin");
+        }
+        if (dateDebut.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("La date de début ne peut pas être antérieure à la date courante");
+        }
+    }
+
+
+
 
     @Override
     public String toString() {
