@@ -43,30 +43,7 @@ public class Main {
 
                         break;
 
-                    case "2":
-                        System.out.print("Entrez votre nom : ");
-                        String nomClient = scanner.nextLine();
-                        System.out.print("Entrez votre mot de passe : ");
-                        String mdpClient = scanner.nextLine();
-
-                        int[] resultats = DBManager.authentifierClient(nomClient, mdpClient);
-
-                        if (resultats[0] != 0) {
-                            int idClient = resultats[0];
-                            int numImmatriculation = resultats[1];
-
-                            Main.idClientConnecte = idClient;
-                            Main.numImmatriculationClientConnecte = numImmatriculation;
-
-                            afficherMenu();
-
-                            choix = scanner.nextLine();
-
-                        } else {
-                            System.out.println("Connexion échouée. Veuillez réessayer.");
-                        }
-
-                        break;
+                    
 
                 }
                 // Demande à l'utilisateur de choisir une fonctionnalité
