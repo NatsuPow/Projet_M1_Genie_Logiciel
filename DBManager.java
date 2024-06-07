@@ -47,7 +47,7 @@ public class DBManager {
 
 
     //VERIFICATION AUTHENTIFICATION CLIENT
-    public static int[] authentifierClient(Client clientExistant) {
+    public static int[] authentifierClient(String nomClient, String mdpClient) {
         int[] resultats = new int[2];
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -56,12 +56,23 @@ public class DBManager {
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-            String requeteSelect = "SELECT Client.ID, Voiture.NumeroImmatriculation FROM Client INNER JOIN Voiture ON Client.ID = Voiture.ID_Client WHERE Client.Nom = ? AND Client.Mdp = ?";
+            String requeteSelect = "SELECT Client.IdClient, Client.NumPlaqueImmatriculation FROM Client WHERE Client.Nom = ? AND Client.motdepasse = ?";
             preparedStatement = connection.prepareStatement(requeteSelect);
-            preparedStatement.setString(1, clientExistant.getNom());
-            preparedStatement.setString(2, clientExistant.getMdp());
+            preparedStatement.setString(1, nomClient);
+            preparedStatement.setString(2, mdpClient);
 
             resultSet = preparedStatement.executeQuery();
+
+            // Vérifier si le client a été trouvé dans la base de données
+            if (resultSet.next()) {
+                // Récupérer l'ID et le numéro d'immatriculation du client
+                int idClient = resultSet.getInt("IdClient");
+                int numImmatriculation = resultSet.getInt("NumPlaqueImmatriculation");
+
+                // Stocker les informations du client dans le tableau de résultats
+                resultats[0] = idClient;
+                resultats[1] = numImmatriculation;
+            }
 
         } catch (SQLException e) {
             System.err.println("Échec de l'authentification du client dans la base de données.");
@@ -86,6 +97,7 @@ public class DBManager {
 
         return resultats;
     }
+
 
 
 
